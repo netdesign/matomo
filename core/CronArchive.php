@@ -831,7 +831,7 @@ class CronArchive
      */
     private function getVisitsRequestUrl($idSite, $period, $date, $segment = false)
     {
-        $request = "?module=API&method=API.get&idSite=$idSite&period=$period&date=" . $date . "&format=php";
+        $request = "?module=API&method=API.get&idSite=$idSite&period=$period&date=" . $date . "&format=json";
         if ($segment) {
             $request .= '&segment=' . urlencode($segment);
         }
@@ -911,7 +911,7 @@ class CronArchive
             $this->logArchiveWebsite($idSite, "day", $date);
 
             $content = $this->request($url);
-            $daysResponse = Common::safe_unserialize($content);
+            $daysResponse = json_decode($content, true);
 
             if (empty($content)
                 || !is_array($daysResponse)
@@ -1144,7 +1144,7 @@ class CronArchive
             $success = $success && $this->checkResponse($content, $url);
 
             if ($noSegmentUrl == $url && $success) {
-                $stats = Common::safe_unserialize($content);
+                $stats = json_decode($content, true);
 
                 if (!is_array($stats)) {
                     $this->logError("Error unserializing the following response from $url: " . $content);
@@ -1222,7 +1222,7 @@ class CronArchive
     }
 
     /**
-     * Issues a request to $url eg. "?module=API&method=API.getDefaultMetricTranslations&format=original&serialize=1"
+     * Issues a request to $url eg. "?module=API&method=API.getDefaultMetricTranslations&format=json"
      *
      * @param string $url
      * @return string
