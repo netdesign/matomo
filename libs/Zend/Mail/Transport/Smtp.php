@@ -119,6 +119,8 @@ class Zend_Mail_Transport_Smtp extends Zend_Mail_Transport_Abstract
     {
         if (isset($config['name'])) {
             $this->_name = $config['name'];
+        } else {
+            $this->_name = gethostname();
         }
         if (isset($config['port'])) {
             $this->_port = $config['port'];
